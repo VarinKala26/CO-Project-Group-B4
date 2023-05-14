@@ -91,7 +91,7 @@ def B(instruction, output, program_counter):
         print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
         
- def C(instruction, output, program_counter):
+def C(instruction, output, program_counter):
     global error_flag
 
     if instruction[0] == "mov":

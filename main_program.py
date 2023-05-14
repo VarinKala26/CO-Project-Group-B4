@@ -90,4 +90,54 @@ def B(instruction, output, program_counter):
     except:
         print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
+        
+ def C(instruction, output, program_counter):
+    global error_flag
+
+    if instruction[0] == "mov":
+        output.append("0001100000")
+    else:
+        output.append(opcode[instruction[0]] + "00000")
+
+    for i in range(1, 3):
+        if instruction[0] != "mov" and instruction[i] == "FLAGS":
+            print("FLAGSMisuseError: Register FLAGS cannot be used for operation \'", instruction[0], "\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            error_flag = 1
+            return
+        
+        if instruction[i] not in registers:
+            print("RegisterNameError: Register \'", instruction[i], "\' does not exist! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            error_flag = 1
+            return
+        
+        output[program_counter] += registers[instruction[i]]
+    
+    try:
+        check = instruction[3]
+    except:
+        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        error_flag = 1
+
+def D(instruction, output, variable_call, program_counter):
+    global error_flag
+    
+    if instruction[1] == "FLAGS":
+        print("FLAGSMisuseError: Register FLAGS cannot be used for operation \'", instruction[0], "\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        error_flag = 1
+        return
+    
+    if instruction[1] not in registers:
+        print("RegisterNameError: Register \'", instruction[1], "\' does not exist! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        error_flag = 1
+        return
+
+    output.append(opcode[instruction[0]] + "0" + registers[instruction[1]])
+    
+    variable_call[program_counter] = instruction[2]
+
+    try:
+        check = instruction[3]
+    except:
+        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        error_flag = 1
 

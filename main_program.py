@@ -141,3 +141,89 @@ def D(instruction, output, variable_call, program_counter):
         print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
 
+#Ritviek Part 1: func E
+		
+error_flag = 0
+hlt_flag = 0
+variable_count = 0
+
+f = open("CO_test.txt")
+input_length = len(f.readlines())
+f.close()
+
+f = open("CO_test.txt")
+while True:
+    if error_flag:
+        break
+
+    instruction = f.readline().split()
+
+    if instruction == []:
+        if program_counter + variable_count == input_length:
+            if hlt_flag == 0:
+                print("EOFError: Missing \'hlt\' instruction!")
+                error_flag = 1
+            break
+        continue
+
+    if hlt_flag:
+        print("ImproperEOFError: \'hlt\' not being used as last instruction!")
+        error_flag = 1
+        break
+
+
+    if instruction[0][-1] == ':':
+        label_pos[instruction[0][:-1]] = program_counter
+        instruction = instruction[1:]
+
+    if instruction[0] == "var":
+        if program_counter != 0:
+            print("VariableDefinitionError: Variable must be declared at the beginning! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            error_flag = 1
+            break
+        variable_rec[instruction[1]] = -1;
+        variable_count += 1
+        continue
+
+	#Ritviek Part 2: if else
+	
+	program_counter += 1
+
+f.close()
+
+if error_flag == 0:
+    for i in variable_rec:
+        program_counter += 1
+        variable_rec[i] = program_counter
+
+    for i in variable_call:
+        if variable_call[i] not in variable_rec:
+            if variable_call[i] in label_pos:
+                print("LabelMisuseError: Label \'", variable_call[i], "\' has been called as Variable! (Line ", i + variable_count + 1, ")", sep = '')
+            else:
+                print("VariableNotDefinedError: Label \'", variable_call[i], "\' has not been defined! (Line ", i + variable_count + 1, ")", sep = '')
+            error_flag = 1
+            break
+
+        num = bin(variable_rec[variable_call[i]])[2:]
+        output[i] += (7 - len(num)) * "0" + num
+
+    for i in label_call:
+        if error_flag == 1:
+            break
+
+        if label_call[i] not in label_pos:
+            if label_call[i] in variable_rec:
+                print("VariableMisuseError: Variable \'", label_call[i], "\' has been called as Label! (Line ", i + variable_count + 1, ")", sep = '')
+            else:
+                print("LabelNotDefinedError: Label \'", label_call[i], "\' has not been defined! (Line ", i + variable_count + 1, ")", sep = '')
+            error_flag = 1
+            break
+        
+        num = bin(label_pos[label_call[i]])[2:]
+        output[i] += (7 - len(num)) * "0" + num
+
+    if error_flag == 0:
+        f = open("machinecode.txt", "w")
+        f.write("\n".join(output))
+        f.close()

@@ -1,16 +1,31 @@
 # CO-Project-Final
-****************************************ASSEMBLER**************************************************************
+*************************************** INTRODUCTION **************************************************************
 This project is made by : 
 	    	Ritviek Padda:    2022409
             Riya Gupta:       2022410
             Varin Kala:       2022561
             Vimansh Mahajan:  2022572 
 			
-This document contains information about the Assembler that has been implemented using the code provided in the main file.        
-****************************************WORKFLOW********************************************************************
+This document contains information about the Assembler that has been implemented using the code provided in the main file. 
+Language used to write the program: Python3
+**************************************** WORKFLOW- ASSEMBLER ******************************************************
+1) Assembler first initialises the following: 
+	a) Opcode dictionary (opcodes were already provided)
+	b) Register-code dictionary (codes for registers were already provided)
+	c) File object containing instructions (File name: CO_test.txt)
+	d) Length of input file 
 
+2) Assembler then declares the following:
+	a) Output list conatining strings resembling lines of machine code
+	b) Dictionaries handling addresses of variables and labels used 
+	
+3) Assembler now loops through the input assembly code, updating the output list and simultaneously checking for errors, if any. (Error handling has been explained below.)
 
-****************************************ERROR HANDLING **************************************************************
+4) Assembler makes suitable changes to the output list by adding addresses of the variables and labels. 
+
+5) Finally, an output text file (File name: machinecode.txt) is generated containing the machine code. 
+
+**************************************** ERROR HANDLING ***********************************************************
 
 The following errors have been taken into account in the code: 
 a) Typos in instruction name or register name: "OperationNameError" and "RegisterNameError" 

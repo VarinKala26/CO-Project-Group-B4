@@ -1,5 +1,5 @@
 # CO-Project-Final
-*************************************** INTRODUCTION **************************************************************
+*********************************************** INTRODUCTION *******************************************************
 This project is made by : 
 	    	Ritviek Padda:    2022409
             Riya Gupta:       2022410
@@ -8,7 +8,7 @@ This project is made by :
 			
 This document contains information about the Assembler that has been implemented using the code provided in the main file. 
 Language used to write the program: Python3
-**************************************** WORKFLOW- ASSEMBLER ******************************************************
+********************************************** WORKFLOW- ASSEMBLER **************************************************
 1) Assembler first initialises the following: 
 	a) Opcode dictionary (opcodes were already provided)
 	b) Register-code dictionary (codes for registers were already provided)
@@ -25,7 +25,7 @@ Language used to write the program: Python3
 
 5) Finally, an output text file (File name: machinecode.txt) is generated containing the machine code. 
 
-**************************************** ERROR HANDLING ***********************************************************
+********************************************** ERROR HANDLING ******************************************************
 
 The following errors have been taken into account in the code: 
 a) Typos in instruction name or register name: "OperationNameError" and "RegisterNameError" 

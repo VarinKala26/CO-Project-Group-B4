@@ -40,9 +40,10 @@ def A(instruction, output, program_counter):
     
     try:
         check = instruction[4]
-    except:
-        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+		print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
+    except:
+    	pass
 
 
 def B(instruction, output, program_counter):
@@ -87,9 +88,10 @@ def B(instruction, output, program_counter):
     
     try:
         check = instruction[3]
-    except:
-        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+		print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
+    except:
+        pass
         
 def C(instruction, output, program_counter):
     global error_flag
@@ -114,9 +116,10 @@ def C(instruction, output, program_counter):
     
     try:
         check = instruction[3]
-    except:
-        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+		print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
+    except:
+        pass
 
 def D(instruction, output, variable_call, program_counter):
     global error_flag
@@ -137,9 +140,10 @@ def D(instruction, output, variable_call, program_counter):
 
     try:
         check = instruction[3]
-    except:
-        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+		print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
+    except:
+        pass
 
 def E(instruction, output, label_call, program_counter):
     global error_flag
@@ -149,9 +153,10 @@ def E(instruction, output, label_call, program_counter):
 
     try:
         check = instruction[4]
-    except:
-        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+		print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
+    except:
+        pass
 		
 error_flag = 0
 hlt_flag = 0
@@ -208,10 +213,11 @@ while True:
     elif instruction[0] == "hlt":
         try:
             check = instruction[1]
-        except:
-            print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+			print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
             error_flag = 1
             break
+        except:
+            pass
 
         output.append("11010" + 11 * "0")
         hlt_flag = 1
@@ -225,8 +231,8 @@ f.close()
 
 if error_flag == 0:
     for i in variable_rec:
-        program_counter += 1
-        variable_rec[i] = program_counter
+        variable_rec[i] = int(program_counter)
+		program_counter += 1
 
     for i in variable_call:
         if variable_call[i] not in variable_rec:

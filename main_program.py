@@ -141,7 +141,17 @@ def D(instruction, output, variable_call, program_counter):
         print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
 
-#Ritviek Part 1: func E
+def E(instruction, output, label_call, program_counter):
+    global error_flag
+
+    output.append(opcode[instruction[0]] + "0000")
+    label_call[program_counter] = instruction[1]
+
+    try:
+        check = instruction[4]
+    except:
+        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        error_flag = 1
 		
 error_flag = 0
 hlt_flag = 0
@@ -185,7 +195,29 @@ while True:
         variable_count += 1
         continue
 
-	#Ritviek Part 2: if else
+	if instruction[0] in ["add", "sub", "mul", "xor", "or", "and", "addf", "subf"]:
+        A(instruction, output, program_counter)
+    elif instruction[0] in ["rs", "ls", "movf"] or (instruction[0] == "mov" and instruction[2] not in registers):
+        B(instruction, output, program_counter)
+    elif instruction[0] in ["mov", "div", "not", "cmp"]:
+        C(instruction, output, program_counter)
+    elif instruction[0] in ["ld", "st"]:
+        D(instruction, output, variable_call, program_counter)
+    elif instruction[0] in ["jmp", "jlt", "jgt", "je"]:
+        E(instruction, output, label_call, program_counter)
+    elif instruction[0] == "hlt":
+        try:
+            check = instruction[1]
+        except:
+            print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            error_flag = 1
+            break
+
+        output.append("11010" + 11 * "0")
+        hlt_flag = 1
+    else:
+        print("OperationNameError: Operation \'", instruction[0], "\' is incorrect! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        error_flag = 1
 	
 	program_counter += 1
 

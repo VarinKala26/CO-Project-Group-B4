@@ -1,4 +1,6 @@
-# Final code
+#
+# IGNORE THIS FILE -------
+#
 '''
 GeneralSyntaxError:
     Wrong Syntax: If there are more tokens in instruction than required

@@ -5,6 +5,8 @@ GeneralSyntaxError:
     Immediate Value must start with $
 '''
 
+import sys
+
 opcode = {"add": "00000", "sub": "00001", "ld": "00100", "st": "00101", "mul": "00110", "div": "00111", \
           "rs": "01000", "ls": "01001", "xor": "01010", "or": "01011", "and": "01100", "not": "01101", "cmp": "01110", \
           "jmp": "01111", "jlt": "11100", "jgt": "11101", "je": "11111", "addf": "10000", "subf": "10001", "movf": "10010"}
@@ -20,6 +22,7 @@ label_pos = {}
 
 program_counter = 0
 
+
 def A(instruction, output, program_counter):
     global error_flag
 
@@ -30,20 +33,20 @@ def A(instruction, output, program_counter):
             print("FLAGSMisuseError: Register FLAGS cannot be used for operation \'", instruction[0], "\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
             error_flag = 1
             return
-        
+       
         if instruction[i] not in registers:
             print("RegisterNameError: Register \'", instruction[i], "\' does not exist! (Line ", program_counter + variable_count + 1, ")", sep = '')
             error_flag = 1
             return
-        
+       
         output[program_counter] += registers[instruction[i]]
-    
+   
     try:
         check = instruction[4]
-		print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
     except:
-    	pass
+        pass     ############
 
 
 def B(instruction, output, program_counter):
@@ -62,7 +65,7 @@ def B(instruction, output, program_counter):
         print("FLAGSMisuseError: Register FLAGS cannot be used for operation \'", instruction[0], "\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
         return
-    
+   
     if instruction[1] not in registers:
         print("RegisterNameError: Register \'", instruction[1], "\' does not exist! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
@@ -85,14 +88,14 @@ def B(instruction, output, program_counter):
     else:
         #Part of Q3
         pass
-    
+   
     try:
         check = instruction[3]
-		print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
     except:
         pass
-        
+
 def C(instruction, output, program_counter):
     global error_flag
 
@@ -106,45 +109,46 @@ def C(instruction, output, program_counter):
             print("FLAGSMisuseError: Register FLAGS cannot be used for operation \'", instruction[0], "\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
             error_flag = 1
             return
-        
+       
         if instruction[i] not in registers:
             print("RegisterNameError: Register \'", instruction[i], "\' does not exist! (Line ", program_counter + variable_count + 1, ")", sep = '')
             error_flag = 1
             return
-        
+       
         output[program_counter] += registers[instruction[i]]
-    
+   
     try:
         check = instruction[3]
-		print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
     except:
         pass
 
 def D(instruction, output, variable_call, program_counter):
     global error_flag
-    
+   
     if instruction[1] == "FLAGS":
         print("FLAGSMisuseError: Register FLAGS cannot be used for operation \'", instruction[0], "\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
         return
-    
+   
     if instruction[1] not in registers:
         print("RegisterNameError: Register \'", instruction[1], "\' does not exist! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
         return
 
     output.append(opcode[instruction[0]] + "0" + registers[instruction[1]])
-    
+   
     variable_call[program_counter] = instruction[2]
 
     try:
         check = instruction[3]
-		print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
     except:
         pass
 
+#Ritviek begins
 def E(instruction, output, label_call, program_counter):
     global error_flag
 
@@ -153,25 +157,33 @@ def E(instruction, output, label_call, program_counter):
 
     try:
         check = instruction[4]
-		print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
     except:
         pass
-		
+#Ritviek ends
+
 error_flag = 0
 hlt_flag = 0
 variable_count = 0
+input_length = 0
+IEOF = 0
 
-f = open("CO_test.txt")
-input_length = len(f.readlines())
-f.close()
+# f = open("CO_test.txt")
+# input_length = len(f.readlines())
+# f.close()
 
-f = open("CO_test.txt")
-while True:
+input_list = sys.stdin.readlines()
+
+index = 0
+# f = open("CO_test.txt")
+for sen in input_list:
     if error_flag:
         break
 
-    instruction = f.readline().split()
+    # instruction = f.readline().split()
+    instruction = sen.split()
+    # index += 1
 
     if instruction == []:
         if program_counter + variable_count == input_length:
@@ -182,9 +194,7 @@ while True:
         continue
 
     if hlt_flag:
-        print("ImproperEOFError: \'hlt\' not being used as last instruction!")
-        error_flag = 1
-        break
+        IEOF = 1
 
 
     if instruction[0][-1] == ':':
@@ -200,7 +210,7 @@ while True:
         variable_count += 1
         continue
 
-	if instruction[0] in ["add", "sub", "mul", "xor", "or", "and", "addf", "subf"]:
+    if instruction[0] in ["add", "sub", "mul", "xor", "or", "and", "addf", "subf"]:
         A(instruction, output, program_counter)
     elif instruction[0] in ["rs", "ls", "movf"] or (instruction[0] == "mov" and instruction[2] not in registers):
         B(instruction, output, program_counter)
@@ -213,26 +223,29 @@ while True:
     elif instruction[0] == "hlt":
         try:
             check = instruction[1]
-			print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
             error_flag = 1
             break
         except:
-            pass
+            pass   ##############
 
         output.append("11010" + 11 * "0")
         hlt_flag = 1
     else:
         print("OperationNameError: Operation \'", instruction[0], "\' is incorrect! (Line ", program_counter + variable_count + 1, ")", sep = '')
         error_flag = 1
-	
-	program_counter += 1
 
-f.close()
+    program_counter += 1
 
-if error_flag == 0:
+# f.close()
+
+if IEOF:
+print("ImproperEOFError: \'hlt\' not being used as last instruction!"); error_flag = 1;
+
+if error_flag == 0 and IEOF == 0:
     for i in variable_rec:
-        variable_rec[i] = int(program_counter)
-		program_counter += 1
+        variable_rec[i] = int(program_counter)     ####### int() has been added
+        program_counter += 1.   ###### swapping 240 and 241
 
     for i in variable_call:
         if variable_call[i] not in variable_rec:
@@ -257,11 +270,13 @@ if error_flag == 0:
                 print("LabelNotDefinedError: Label \'", label_call[i], "\' has not been defined! (Line ", i + variable_count + 1, ")", sep = '')
             error_flag = 1
             break
-        
+       
         num = bin(label_pos[label_call[i]])[2:]
         output[i] += (7 - len(num)) * "0" + num
 
     if error_flag == 0:
-        f = open("machinecode.txt", "w")
-        f.write("\n".join(output))
-        f.close()
+        # f = open("machinecode.txt", "w")
+        # f.write("\n".join(output))
+        # f.close()
+        # for ans in output:
+        print("\n".join(output))

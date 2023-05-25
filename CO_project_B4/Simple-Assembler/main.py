@@ -30,12 +30,12 @@ def A(instruction, output, program_counter):
 
     for i in range(1, 4):
         if instruction[i] == "FLAGS":
-            print("FLAGSMisuseError: Register FLAGS cannot be used for operation \'", instruction[0], "\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            sys.stdout.write("FLAGSMisuseError: Register FLAGS cannot be used for operation \'" + instruction[0] + "\'! (Line " + str(program_counter + variable_count + 1) + ")")
             error_flag = 1
             return
        
         if instruction[i] not in registers:
-            print("RegisterNameError: Register \'", instruction[i], "\' does not exist! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            sys.stdout.write("RegisterNameError: Register \'" + instruction[i] + "\' does not exist! (Line " + str(program_counter + variable_count + 1) + ")")
             error_flag = 1
             return
        
@@ -43,7 +43,7 @@ def A(instruction, output, program_counter):
    
     try:
         check = instruction[4]
-        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        sys.stdout.write("GeneralSyntaxError: Wrong Syntax! (Line " + str(program_counter + variable_count + 1) + ")")
         error_flag = 1
     except:
         pass     ############
@@ -62,12 +62,12 @@ def B(instruction, output, program_counter):
         output[program_counter] += "0"
 
     if instruction[1] == "FLAGS":
-        print("FLAGSMisuseError: Register FLAGS cannot be used for operation \'", instruction[0], "\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        sys.stdout.write("FLAGSMisuseError: Register FLAGS cannot be used for operation \'" + instruction[0] + "\'! (Line " + str(program_counter + variable_count + 1) + ")")
         error_flag = 1
         return
    
     if instruction[1] not in registers:
-        print("RegisterNameError: Register \'", instruction[1], "\' does not exist! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        sys.stdout.write("RegisterNameError: Register \'" + instruction[1] + "\' does not exist! (Line " + str(program_counter + variable_count + 1) + ")")
         error_flag = 1
         return
 
@@ -75,10 +75,10 @@ def B(instruction, output, program_counter):
 
     if instruction[0] != "movf":
         if instruction[2][0] != "$":
-            print("GeneralSyntaxError: Immediate Value must start with \'$\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            sys.stdout.write("GeneralSyntaxError: Immediate Value must start with \'$\'! (Line " + str(program_counter + variable_count + 1) + ")")
 
         if '.' in instruction[2][1:] or int(instruction[2][1:]) < 0 or int(instruction[2][1:]) > 127:
-            print("ImmediateValueError: Value cannot be evaluated! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            sys.stdout.write("ImmediateValueError: Value cannot be evaluated! (Line " + str(program_counter + variable_count + 1) + ")")
             error_flag = 1
             return
 
@@ -91,7 +91,7 @@ def B(instruction, output, program_counter):
    
     try:
         check = instruction[3]
-        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        sys.stdout.write("GeneralSyntaxError: Wrong Syntax! (Line " + str(program_counter + variable_count + 1) + ")")
         error_flag = 1
     except:
         pass
@@ -106,12 +106,12 @@ def C(instruction, output, program_counter):
 
     for i in range(1, 3):
         if instruction[0] != "mov" and instruction[i] == "FLAGS":
-            print("FLAGSMisuseError: Register FLAGS cannot be used for operation \'", instruction[0], "\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            sys.stdout.write("FLAGSMisuseError: Register FLAGS cannot be used for operation \'" + instruction[0] + "\'! (Line " + str(program_counter + variable_count + 1) + ")")
             error_flag = 1
             return
        
         if instruction[i] not in registers:
-            print("RegisterNameError: Register \'", instruction[i], "\' does not exist! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            sys.stdout.write("RegisterNameError: Register \'" + instruction[i] + "\' does not exist! (Line " + str(program_counter + variable_count + 1) + ")")
             error_flag = 1
             return
        
@@ -119,7 +119,7 @@ def C(instruction, output, program_counter):
    
     try:
         check = instruction[3]
-        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        sys.stdout.write("GeneralSyntaxError: Wrong Syntax! (Line " + str(program_counter + variable_count + 1) + ")")
         error_flag = 1
     except:
         pass
@@ -128,12 +128,12 @@ def D(instruction, output, variable_call, program_counter):
     global error_flag
    
     if instruction[1] == "FLAGS":
-        print("FLAGSMisuseError: Register FLAGS cannot be used for operation \'", instruction[0], "\'! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        sys.stdout.write("FLAGSMisuseError: Register FLAGS cannot be used for operation \'" + instruction[0] + "\'! (Line " + str(program_counter + variable_count + 1) + ")")
         error_flag = 1
         return
    
     if instruction[1] not in registers:
-        print("RegisterNameError: Register \'", instruction[1], "\' does not exist! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        sys.stdout.write("RegisterNameError: Register \'" + instruction[1] + "\' does not exist! (Line " + str(program_counter + variable_count + 1) + ")")
         error_flag = 1
         return
 
@@ -143,7 +143,7 @@ def D(instruction, output, variable_call, program_counter):
 
     try:
         check = instruction[3]
-        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        sys.stdout.write("GeneralSyntaxError: Wrong Syntax! (Line " + str(program_counter + variable_count + 1) + ")")
         error_flag = 1
     except:
         pass
@@ -157,7 +157,7 @@ def E(instruction, output, label_call, program_counter):
 
     try:
         check = instruction[4]
-        print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        sys.stdout.write("GeneralSyntaxError: Wrong Syntax! (Line " + str(program_counter + variable_count + 1) + ")")
         error_flag = 1
     except:
         pass
@@ -188,7 +188,7 @@ for sen in input_list:
     if instruction == []:
         if program_counter + variable_count == input_length:
             if hlt_flag == 0:
-                print("EOFError: Missing \'hlt\' instruction!")
+                sys.stdout.write("EOFError: Missing \'hlt\' instruction!")
                 error_flag = 1
             break
         continue
@@ -203,7 +203,7 @@ for sen in input_list:
 
     if instruction[0] == "var":
         if program_counter != 0:
-            print("VariableDefinitionError: Variable must be declared at the beginning! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            sys.stdout.write("VariableDefinitionError: Variable must be declared at the beginning! (Line " + str(program_counter + variable_count + 1) + ")")
             error_flag = 1
             break
         variable_rec[instruction[1]] = -1;
@@ -223,7 +223,7 @@ for sen in input_list:
     elif instruction[0] == "hlt":
         try:
             check = instruction[1]
-            print("GeneralSyntaxError: Wrong Syntax! (Line ", program_counter + variable_count + 1, ")", sep = '')
+            sys.stdout.write("GeneralSyntaxError: Wrong Syntax! (Line " + str(program_counter + variable_count + 1) + ")")
             error_flag = 1
             break
         except:
@@ -232,7 +232,7 @@ for sen in input_list:
         output.append("11010" + 11 * "0")
         hlt_flag = 1
     else:
-        print("OperationNameError: Operation \'", instruction[0], "\' is incorrect! (Line ", program_counter + variable_count + 1, ")", sep = '')
+        sys.stdout.write("OperationNameError: Operation \'" + instruction[0] + "\' is incorrect! (Line " + str(program_counter + variable_count + 1) + ")")
         error_flag = 1
 
     program_counter += 1
@@ -240,7 +240,8 @@ for sen in input_list:
 # f.close()
 
 if IEOF:
-print("ImproperEOFError: \'hlt\' not being used as last instruction!"); error_flag = 1;
+    sys.stdout.write("ImproperEOFError: \'hlt\' not being used as last instruction!")
+    error_flag = 1
 
 if error_flag == 0 and IEOF == 0:
     for i in variable_rec:
@@ -250,9 +251,9 @@ if error_flag == 0 and IEOF == 0:
     for i in variable_call:
         if variable_call[i] not in variable_rec:
             if variable_call[i] in label_pos:
-                print("LabelMisuseError: Label \'", variable_call[i], "\' has been called as Variable! (Line ", i + variable_count + 1, ")", sep = '')
+                sys.stdout.write("LabelMisuseError: Label \'" + str(variable_call[i]) + "\' has been called as Variable! (Line " + str(i + variable_count + 1) + ")")
             else:
-                print("VariableNotDefinedError: Label \'", variable_call[i], "\' has not been defined! (Line ", i + variable_count + 1, ")", sep = '')
+                sys.stdout.write("VariableNotDefinedError: Label \'" + str(variable_call[i]) + "\' has not been defined! (Line " + str(i + variable_count + 1) + ")")
             error_flag = 1
             break
 
@@ -265,9 +266,9 @@ if error_flag == 0 and IEOF == 0:
 
         if label_call[i] not in label_pos:
             if label_call[i] in variable_rec:
-                print("VariableMisuseError: Variable \'", label_call[i], "\' has been called as Label! (Line ", i + variable_count + 1, ")", sep = '')
+                sys.stdout.write("VariableMisuseError: Variable \'" + str(label_call[i]) + "\' has been called as Label! (Line " + str(i + variable_count + 1) + ")")
             else:
-                print("LabelNotDefinedError: Label \'", label_call[i], "\' has not been defined! (Line ", i + variable_count + 1, ")", sep = '')
+                sys.stdout.write("LabelNotDefinedError: Label \'" + str(label_call[i]) + "\' has not been defined! (Line " + str(i + variable_count + 1) + ")")
             error_flag = 1
             break
        
@@ -279,4 +280,4 @@ if error_flag == 0 and IEOF == 0:
         # f.write("\n".join(output))
         # f.close()
         # for ans in output:
-        print("\n".join(output))
+        sys.stdout.write("\n".join(output))

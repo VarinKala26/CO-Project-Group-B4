@@ -6,7 +6,7 @@ This project is made by :
             Varin Kala:       2022561
             Vimansh Mahajan:  2022572 
 			
-This document contains information about the Assembler that has been implemented using the code provided in the main file. 
+This document contains information about the Assembler and simulator that has been implemented using the code provided in the main file. 
 Language used to write the program: Python3
 ********************************************** WORKFLOW- ASSEMBLER **************************************************
 1) Assembler first initialises the following: 
@@ -23,9 +23,9 @@ Language used to write the program: Python3
 
 4) Assembler makes suitable changes to the output list by adding addresses of the variables and labels. 
 
-5) Finally, an output text file (File name: machinecode.txt) is generated containing the machine code. 
+5) Finally, the machine code output is displayed on the terminal. 
 
-********************************************** ERROR HANDLING ******************************************************
+********************************************** ERROR HANDLING-ASSEMBLER ******************************************************
 
 The following errors have been taken into account in the code: 
 a) Typos in instruction name or register name: "OperationNameError" and "RegisterNameError" 
@@ -38,11 +38,23 @@ g) Variables not declared at the beginning: "VariableDefinitionError"
 h) Missing hlt instruction: "EOFError"
 i) hlt not being used as the last instruction: "ImproperEOFError"
 
+
+
 Apart from these, we have also considered the following cases as "GeneralSyntaxError":
 a) Wrong Syntax: If there are more tokens in instruction than required
 b) Immediate Value not starting with "$"
 
 On encountering the above mentioned errors, our assembler notifies the user about the error by not just mentioning the name of the error, but also by mentioning the line number in which the error was encountered.
 
+***************************************************** WORKFLOW-SIMULATOR *****************************************************
+1) Our simulator first initialises:
+	a) A dictionary named "RF" which contains the names of registers as the key and their respective opcodes as the values. 
+	b) A list named "MEM" acting as the program memory. 
+	c) A variable for program counter.
+	d) A variable acting as halt-flag.
 
+2) The simulator now loops through the input machine code, extracts values stored in the given registers, converts them to integers/floating point and then performs the operation. It checks for overflow where needed, and the final value after the operation is then converted back to binary and suitable changes are made to the registers.
 
+3) After execution of each instruction, the program counter and the value in each register is displayed.
+
+4) At the end of the program, the entire memory (contents of MEM list) is displayed. 

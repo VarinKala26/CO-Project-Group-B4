@@ -44,11 +44,20 @@ def DataConvertToBinary(number):
     binary_string = '0'*(16-len(binary_string)) + binary_string
     return binary_string
 
+def PCConvertToBinary(number):
+    binary_string = str(bin(number)[2:])
+    binary_string = '0'*(7-len(binary_string)) + binary_string
+    return binary_string
+
 def ConvertToInt(Binary_string):
     num=0
+
+    if Binary_string[-1] == '\r':
+        Binary_string = Binary_string[:-1]
     for i in range(len(Binary_string)):
-        if Binary_string[i]=='1':
-            num+=2**((len(Binary_string)-1)-i)
+        if Binary_string[i] == '\r':
+            break
+        num += 2**((len(Binary_string)-1)-i) * int(Binary_string[i])
     return num
 
 def addition(instruction):
@@ -56,7 +65,7 @@ def addition(instruction):
     x = instruction
     first = x[7:10]
     second = x[10:13]
-    third = x[13:]
+    third = x[13:16]
 
     first_int = str(ConvertToInt(first))
     second_int = str(ConvertToInt(second))
@@ -84,9 +93,9 @@ def addition(instruction):
 
 def subtraction(instruction):
     global RF
-    a=((int(instruction[13]))(2**2))+(int(instruction[14])(2**1))+(int(instruction[15])(2**0))
-    b=(int(instruction[10])(2**2))+(int(instruction[11])(2**1))+(int(instruction[12])(2**0))
-    c=(int(instruction[7])(2**2))+(int(instruction[8])(2**1))+(int(instruction[9])(2**0))
+    a=((int(instruction[13]))*(2**2))+(int(instruction[14])*(2**1))+(int(instruction[15])*(2**0))
+    b=(int(instruction[10])*(2**2))+(int(instruction[11])*(2**1))+(int(instruction[12])*(2**0))
+    c=(int(instruction[7])*(2**2))+(int(instruction[8])*(2**1))+(int(instruction[9])*(2**0))
     reg1="R"+str(a)
     reg2="R"+str(b)
     reg3="R"+str(c)
@@ -102,7 +111,7 @@ def multiply(instruction):
     global RF
     reg1 = str(ConvertToInt(instruction[7:10]))
     reg2 = str(ConvertToInt(instruction[10:13]))
-    reg3 = str(ConvertToInt(instruction[13:]))
+    reg3 = str(ConvertToInt(instruction[13:16]))
     val2 = ConvertToInt(RF["R" + reg2])
     val3 = ConvertToInt(RF["R" + reg3])
     product = val2 * val3
@@ -117,13 +126,13 @@ def multiply(instruction):
 def moveImmediate(instruction):
     global RF
     reg = str(ConvertToInt(instruction[6:9]))
-    location = ConvertToInt(instruction[9:])
+    location = ConvertToInt(instruction[9:16])
     val_binary = MEM[location]
     RF["R" + reg] = val_binary
 
 def moveRegister(instruction):
     first_reg = 'R' + str(ConvertToInt(instruction[10:13]))
-    second_reg = 'R' + str(ConvertToInt(instruction[13:]))
+    second_reg = 'R' + str(ConvertToInt(instruction[13:16]))
     if second_reg == "R7":
         second_reg = "FLAGS"
     RF[first_reg] = RF[second_reg]
@@ -134,13 +143,13 @@ def load(instruction):
 def store(instruction):
     global MEM
     reg = str(ConvertToInt(instruction[6:9]))
-    location = ConvertToInt(instruction[9:])
+    location = ConvertToInt(instruction[9:16])
     MEM[location] = RF["R" + reg]
 
 def divide(instruction):
     global RF
-    a= (int(instruction[10])(2**2))+(int(instruction[11])(2**1))+(int(instruction[12])(2**0))
-    b= ((int(instruction[13]))(2**2))+(int(instruction[14])(2**1))+(int(instruction[15])(2**0))
+    a= (int(instruction[10])*(2**2))+(int(instruction[11])*(2**1))+(int(instruction[12])*(2**0))
+    b= ((int(instruction[13]))*(2**2))+(int(instruction[14])*(2**1))+(int(instruction[15])*(2**0))
     reg3= "R"+str(a)
     reg4= "R"+ str(b)
     if RF[reg4]=="0"*16:
@@ -156,7 +165,7 @@ def rightShift(instruction):
     global RF
     reg = str(ConvertToInt(instruction[6:9]))
     reg = "R" + reg
-    val = ConvertToInt(instruction[9:])
+    val = ConvertToInt(instruction[9:16])
     if val > 16:
         RF[reg] = "0"*16
     RF[reg] = "0" * val + RF[reg][:-val]
@@ -172,9 +181,9 @@ def leftShift(instruction):
 
 def xor(instruction):
     global RF
-    a=(int(instruction[7])(2**2))+(int(instruction[8])(2**1))+(int(instruction[9])(2**0))
-    b=(int(instruction[10])(2**2))+(int(instruction[11])(2**1))+(int(instruction[12])(2**0))
-    c=((int(instruction[13]))(2**2))+(int(instruction[14])(2**1))+(int(instruction[15])(2**0))
+    a=(int(instruction[7])*(2**2))+(int(instruction[8])*(2**1))+(int(instruction[9])*(2**0))
+    b=(int(instruction[10])*(2**2))+(int(instruction[11])*(2**1))+(int(instruction[12])*(2**0))
+    c=((int(instruction[13]))*(2**2))+(int(instruction[14])*(2**1))+(int(instruction[15])*(2**0))
     reg1= "R"+str(a)
     reg2= "R"+str(b)
     reg3= "R"+str(c)
@@ -182,9 +191,9 @@ def xor(instruction):
 
 def bitwiseOr(instruction):
     global RF
-    a=(int(instruction[7])(2**2))+(int(instruction[8])(2**1))+(int(instruction[9])(2**0))
-    b=(int(instruction[10])(2**2))+(int(instruction[11])(2**1))+(int(instruction[12])(2**0))
-    c=((int(instruction[13]))(2**2))+(int(instruction[14])(2**1))+(int(instruction[15])(2**0))
+    a=(int(instruction[7])*(2**2))+(int(instruction[8])*(2**1))+(int(instruction[9])(2**0))
+    b=(int(instruction[10])*(2**2))+(int(instruction[11])*(2**1))+(int(instruction[12])(2**0))
+    c=((int(instruction[13]))*(2**2))+(int(instruction[14])*(2**1))+(int(instruction[15])*(2**0))
     reg1= "R"+str(a)
     reg2= "R"+str(b)
     reg3= "R"+str(c)
@@ -192,9 +201,9 @@ def bitwiseOr(instruction):
 
 def bitwiseAnd(instruction):
     global RF
-    a=(int(instruction[7])(2**2))+(int(instruction[8])(2**1))+(int(instruction[9])(2**0))
-    b=(int(instruction[10])(2**2))+(int(instruction[11])(2**1))+(int(instruction[12])(2**0))
-    c=((int(instruction[13]))(2**2))+(int(instruction[14])(2**1))+(int(instruction[15])(2**0))
+    a=(int(instruction[7])*(2**2))+(int(instruction[8])*(2**1))+(int(instruction[9])*(2**0))
+    b=(int(instruction[10])*(2**2))+(int(instruction[11])*(2**1))+(int(instruction[12])*(2**0))
+    c=((int(instruction[13]))*(2**2))+(int(instruction[14])*(2**1))+(int(instruction[15])*(2**0))
     reg1= "R"+str(a)
     reg2= "R"+str(b)
     reg3= "R"+str(c)
@@ -202,16 +211,16 @@ def bitwiseAnd(instruction):
 
 def invert(instruction):
     global RF
-    a=(int(instruction[10])(2**2))+(int(instruction[11])(2**1))+(int(instruction[12])(2**0))  #reg1
-    b=((int(instruction[13]))(2**2))+(int(instruction[14])(2**1))+(int(instruction[15])(2**0)) #reg2
+    a=(int(instruction[10])*(2**2))+(int(instruction[11])*(2**1))+(int(instruction[12])*(2**0))
+    b=((int(instruction[13]))*(2**2))+(int(instruction[14])*(2**1))+(int(instruction[15])*(2**0))
     reg1= "R"+str(a)
     reg2= "R"+str(b)
     RF[reg1]=DataConvertToBinary((ConvertToInt(RF[reg2]))^((2**16)-1))
 
 def compare(instruction):
     global RF
-    a=(int(instruction[10])(22))+(int(instruction[11])(2*1))+(int(instruction[12])(2**0))  #reg1
-    b=((int(instruction[13]))(22))+(int(instruction[14])(2*1))+(int(instruction[15])(2**0)) #reg2
+    a=(int(instruction[10])*(2**2))+(int(instruction[11])*(2**1))+(int(instruction[12])*(2**0))
+    b=((int(instruction[13]))*(2**2))+(int(instruction[14])*(2**1))+(int(instruction[15])*(2**0))
     reg1= "R"+str(a)
     reg2= "R"+str(b)
     if ConvertToInt(RF[reg1])<ConvertToInt(RF[reg2]):
@@ -229,7 +238,7 @@ def f_addition(instruction):
     x = instruction
     first = x[7:10]
     second = x[10:13]
-    third = x[13:]
+    third = x[13:16]
 
     first_int = str(ConvertToInt(first))
     second_int = str(ConvertToInt(second))
@@ -239,8 +248,8 @@ def f_addition(instruction):
     source_1 = RF['R'+second_int]
     source_2 = RF['R'+third_int]
 
-    source_1 = ConvertToFloat(source_1[8:])
-    source_2 = ConvertToFloat(source_2[8:])
+    source_1 = ConvertToFloat(source_1[8:16])
+    source_2 = ConvertToFloat(source_2[8:16])
 
     res = source_2+source_1
     temp = RF["FLAGS"]
@@ -254,14 +263,14 @@ def f_addition(instruction):
 
 def f_subtraction(instruction):
     global RF
-    a=((int(instruction[13]))(2**2))+(int(instruction[14])(2**1))+(int(instruction[15])(2**0))
-    b=(int(instruction[10])(2**2))+(int(instruction[11])(2**1))+(int(instruction[12])(2**0))
-    c=(int(instruction[7])(2**2))+(int(instruction[8])(2**1))+(int(instruction[9])(2**0))
+    a=((int(instruction[13]))*(2**2))+(int(instruction[14])*(2**1))+(int(instruction[15])*(2**0))
+    b=(int(instruction[10])*(2**2))+(int(instruction[11])*(2**1))+(int(instruction[12])*(2**0))
+    c=(int(instruction[7])*(2**2))+(int(instruction[8])*(2**1))+(int(instruction[9])*(2**0))
     reg1="R"+str(a)
     reg2="R"+str(b)
     reg3="R"+str(c)
 
-    val = ConvertToFloat(RF[reg2][8:])-ConvertToFloat(RF[reg1][8:])
+    val = ConvertToFloat(RF[reg2][8:16])-ConvertToFloat(RF[reg1][8:16])
     if val < 0:
         RF[reg3]="0"*16
         RF["FLAGS"]=RF["FLAGS"][0:12]+"1"+RF["FLAGS"][13:]
@@ -276,19 +285,19 @@ def moveFImmediate(instruction):
 
 def jumpLessThan(instruction):
     if RF["FLAGS"][-3] == '1':
-        return ConvertToInt(instruction[9:])
+        return ConvertToInt(instruction[9:16])
     
     return new_PC
 
 def jumpGreaterThan(instruction):
     if RF["FLAGS"][-2] == '1':
-        return ConvertToInt(instruction[9:])
+        return ConvertToInt(instruction[9:16])
     
     return new_PC
 
 def jumpEqual(instruction):
     if RF["FLAGS"][-1] == '1':
-        return ConvertToInt(instruction[9:])
+        return ConvertToInt(instruction[9:16])
     
     return new_PC
 
@@ -335,7 +344,7 @@ def execute(instruction, PC):
         moveFImmediate(instruction)
     elif opcode == "11100":
         new_PC = jumpLessThan(instruction)
-    elif opcode == "11101"
+    elif opcode == "11101":
         new_PC = jumpGreaterThan(instruction)
     elif opcode == "11111":
         new_PC = jumpEqual(instruction)
@@ -362,8 +371,10 @@ RF = {"R0": "0000000000000000", "R1": "0000000000000000", "R2": "000000000000000
 
 while not halted:
     instruction = MEM[PC]
+    if instruction[-1] == "\r":
+        instruction = instruction[:-1]
     halted, new_PC = execute(instruction, PC)
-    sys.stdout.write(PC + ' ')
+    sys.stdout.write(PCConvertToBinary(PC) + ' '*8)
     for reg in RF:
         sys.stdout.write(RF[reg] + ' ')
     sys.stdout.write('\n')

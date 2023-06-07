@@ -190,8 +190,8 @@ def xor(instruction):
 
 def bitwiseOr(instruction):
     global RF
-    a=(int(instruction[7])*(2**2))+(int(instruction[8])*(2**1))+(int(instruction[9])(2**0))
-    b=(int(instruction[10])*(2**2))+(int(instruction[11])*(2**1))+(int(instruction[12])(2**0))
+    a=(int(instruction[7])*(2**2))+(int(instruction[8])*(2**1))+(int(instruction[9])*(2**0))
+    b=(int(instruction[10])*(2**2))+(int(instruction[11])*(2**1))+(int(instruction[12])*(2**0))
     c=((int(instruction[13]))*(2**2))+(int(instruction[14])*(2**1))+(int(instruction[15])*(2**0))
     reg1= "R"+str(a)
     reg2= "R"+str(b)

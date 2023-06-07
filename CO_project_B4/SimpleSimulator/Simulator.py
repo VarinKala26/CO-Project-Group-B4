@@ -126,8 +126,7 @@ def multiply(instruction):
 def moveImmediate(instruction):
     global RF
     reg = str(ConvertToInt(instruction[6:9]))
-    location = ConvertToInt(instruction[9:16])
-    val_binary = MEM[location]
+    val_binary = "0"*9 + instruction[9:16]
     RF["R" + reg] = val_binary
 
 def moveRegister(instruction):

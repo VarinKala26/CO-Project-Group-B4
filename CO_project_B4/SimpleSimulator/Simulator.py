@@ -230,7 +230,7 @@ def compare(instruction):
         RF["FLAGS"]=RF["FLAGS"][0:13]+"001"
 
 def uncondJump(instruction):
-    return ConvertToInt(instruction[9:])
+    return ConvertToInt(instruction[9:16])
 
 def f_addition(instruction):
     global RF
@@ -282,23 +282,23 @@ def moveFImmediate(instruction):
     reg = "R" + str(ConvertToInt(instruction[5:8]))
     RF[reg] = "00000000" + instruction[8:]
 
-def jumpLessThan(instruction):
+def jumpLessThan(instruction, PC):
     if RF["FLAGS"][-3] == '1':
         return ConvertToInt(instruction[9:16])
     
-    return new_PC
+    return PC
 
-def jumpGreaterThan(instruction):
+def jumpGreaterThan(instruction, PC):
     if RF["FLAGS"][-2] == '1':
         return ConvertToInt(instruction[9:16])
     
-    return new_PC
+    return PC
 
-def jumpEqual(instruction):
+def jumpEqual(instruction, PC):
     if RF["FLAGS"][-1] == '1':
         return ConvertToInt(instruction[9:16])
     
-    return new_PC
+    return PC 
 
 def execute(instruction, PC):
     halted, new_PC = False, PC + 1
@@ -342,11 +342,11 @@ def execute(instruction, PC):
     elif opcode == "10010":
         moveFImmediate(instruction)
     elif opcode == "11100":
-        new_PC = jumpLessThan(instruction)
+        new_PC = jumpLessThan(instruction, new_PC)
     elif opcode == "11101":
-        new_PC = jumpGreaterThan(instruction)
+        new_PC = jumpGreaterThan(instruction, new_PC)
     elif opcode == "11111":
-        new_PC = jumpEqual(instruction)
+        new_PC = jumpEqual(instruction, new_PC)
     elif opcode == "11010":
         halted = True
     
